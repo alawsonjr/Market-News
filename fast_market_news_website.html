@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MarketFlash | Fast Investing News</title>
+  <style>
+    :root {
+      --black: #0b0b0b;
+      --black-2: #141414;
+      --black-3: #1d1d1d;
+      --gold: #c9a227;
+      --gold-soft: #e0c15c;
+      --text: #f5f5f5;
+      --muted: #a8a8a8;
+      --danger: #ff5c5c;
+      --success: #53d769;
+      --border: rgba(201, 162, 39, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #1b1b1b 0%, #080808 48%, #000 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(8, 8, 8, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      max-width: 1320px;
+      margin: auto;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--gold), #6f5614);
+      display: grid;
+      place-items: center;
+      color: #080808;
+      font-weight: 900;
+      box-shadow: 0 0 28px rgba(201, 162, 39, 0.25);
+    }
+
+    .brand h1 {
+      font-size: 1.25rem;
+      letter-spacing: 0.5px;
+    }
+
+    .brand span {
+      color: var(--gold-soft);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    nav button {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: 0.2s ease;
+      font-weight: 700;
+    }
+
+    nav button:hover,
+    nav button.active {
+      color: var(--gold-soft);
+      border-color: var(--border);
+      background: rgba(201, 162, 39, 0.08);
+    }
+
+    .hero {
+      max-width: 1320px;
+      margin: auto;
+      padding: 34px 22px 18px;
+      display: grid;
+      grid-template-columns: 1.4fr 0.6fr;
+      gap: 24px;
+    }
+
+    .hero-card {
+      background: linear-gradient(145deg, rgba(20,20,20,0.95), rgba(8,8,8,0.95));
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 34px;
+      box-shadow: 0 22px 70px rgba(0,0,0,0.45);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-soft);
+      background: rgba(201, 162, 39, 0.08);
+      border: 1px solid var(--border);
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .pulse {
+      width: 9px;
+      height: 9px;
+      background: var(--success);
+      border-radius: 999px;
+      box-shadow: 0 0 0 8px rgba(83, 215, 105, 0.1);
+    }
+
+    h2 {
+      font-size: clamp(2rem, 5vw, 4.2rem);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .gold-text {
+      color: var(--gold-soft);
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      max-width: 780px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 26px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 13px 18px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+      color: #080808;
+      box-shadow: 0 14px 35px rgba(201, 162, 39, 0.22);
+    }
+
+    .btn-secondary {
+      background: #151515;
+      color: var(--gold-soft);
+      border: 1px solid var(--border);
+    }
+
+    .status-card {
+      background: rgba(20,20,20,0.78);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 24px;
+    }
+
+    .metric {
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .metric:last-child { border-bottom: 0; }
+    .metric small { color: var(--muted); }
+    .metric strong { display: block; font-size: 1.45rem; margin-top: 6px; }
+
+    main {
+      max-width: 1320px;
+      margin: auto;
+      padding: 10px 22px 48px;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .home-layout {
+      display: grid;
+      grid-template-columns: 160px minmax(0, 1fr) 160px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .ad-rail {
+      position: sticky;
+      top: 94px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .ad-box {
+      min-height: 250px;
+      border: 1px dashed rgba(201, 162, 39, 0.45);
+      background: rgba(201, 162, 39, 0.05);
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--muted);
+      padding: 16px;
+      font-size: 0.85rem;
+    }
+
+    .ticker-bar {
+      display: flex;
+      gap: 12px;
+      overflow: hidden;
+      background: #111;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 12px;
+      margin-bottom: 18px;
+    }
+
+    .ticker-item {
+      white-space: nowrap;
+      color: var(--muted);
+      animation: slide 18s linear infinite;
+    }
+
+    .ticker-item b { color: var(--text); }
+    .up { color: var(--success); }
+    .down { color: var(--danger); }
+
+    @keyframes slide {
+      from { transform: translateX(0); }
+      to { transform: translateX(-220px); }
+    }
+
+    .feed-toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      background: rgba(20,20,20,0.78);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 16px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      border: 1px solid rgba(255,255,255,0.1);
+      background: #101010;
+      color: var(--muted);
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .chip.active {
+      color: #080808;
+      background: var(--gold-soft);
+    }
+
+    .refresh {
+      color: var(--gold-soft);
+      font-weight: 900;
+      display: flex;
+      gap: 9px;
+      align-items: center;
+    }
+
+    .news-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .news-card {
+      display: grid;
+      grid-template-columns: 106px 1fr auto;
+      gap: 16px;
+      background: rgba(17,17,17,0.92);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 22px;
+      padding: 16px;
+      transition: 0.2s ease;
+    }
+
+    .news-card:hover {
+      border-color: rgba(201, 162, 39, 0.45);
+      transform: translateY(-2px);
+    }
+
+    .time-box {
+      background: #080808;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 12px;
+      color: var(--gold-soft);
+      font-weight: 900;
+    }
+
+    .news-card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    .news-card p {
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.93rem;
+    }
+
+    .tag {
+      height: fit-content;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(201, 162, 39, 0.08);
+      border: 1px solid var(--border);
+      color: var(--gold-soft);
+      font-size: 0.78rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .panel {
+      background: rgba(17,17,17,0.9);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 28px;
+      margin-top: 12px;
+    }
+
+    .panel h2 {
+      font-size: 2.1rem;
+      margin-bottom: 14px;
+    }
+
+    .panel p, .panel li {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .cards-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 22px;
+    }
+
+    .mini-card {
+      background: #0c0c0c;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    .mini-card h3 { color: var(--gold-soft); margin-bottom: 10px; }
+
+    .chatbot {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .chat-window {
+      background: #080808;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 22px;
+      padding: 18px;
+      min-height: 320px;
+    }
+
+    .bot-msg, .user-msg {
+      max-width: 78%;
+      padding: 13px 15px;
+      border-radius: 18px;
+      margin-bottom: 12px;
+      line-height: 1.5;
+      color: #f2f2f2;
+    }
+
+    .bot-msg { background: #191919; border: 1px solid rgba(255,255,255,0.08); }
+    .user-msg { background: rgba(201, 162, 39, 0.22); margin-left: auto; }
+
+    .chat-input {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    input, select {
+      width: 100%;
+      background: #0b0b0b;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text);
+      padding: 13px 14px;
+      border-radius: 14px;
+      outline: none;
+    }
+
+    .account-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .price {
+      font-size: 2.6rem;
+      color: var(--gold-soft);
+      font-weight: 900;
+      margin: 12px 0;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      text-align: center;
+      padding: 28px 16px;
+      background: #050505;
+    }
+
+    @media (max-width: 1050px) {
+      .hero, .home-layout, .chatbot, .account-grid { grid-template-columns: 1fr; }
+      .ad-rail { position: static; grid-template-columns: 1fr 1fr; }
+      .ad-box { min-height: 110px; }
+    }
+
+    @media (max-width: 680px) {
+      .nav { align-items: flex-start; flex-direction: column; }
+      nav { justify-content: flex-start; }
+      .hero-card { padding: 24px; }
+      .news-card { grid-template-columns: 1fr; }
+      .cards-3 { grid-template-columns: 1fr; }
+      .ad-rail { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <div class="brand-icon">MF</div>
+        <h1>Market<span>Flash</span></h1>
+      </div>
+      <nav>
+        <button class="active" onclick="showPage('home', this)">Home</button>
+        <button onclick="showPage('about', this)">About</button>
+        <button onclick="showPage('support', this)">Support</button>
+        <button onclick="showPage('account', this)">Account</button>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-card">
+      <div class="badge"><span class="pulse"></span> Auto-refreshing market intelligence</div>
+      <h2>Fast news for serious <span class="gold-text">traders & investors.</span></h2>
+      <p>Track breaking stock market, crypto, political, and geopolitical news in one sleek dashboard built for speed, clarity, and market-moving awareness.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary">Start Watching News</button>
+        <button class="btn btn-secondary">Upgrade to Premium</button>
+      </div>
+    </div>
+    <aside class="status-card">
+      <div class="metric"><small>Refresh Speed</small><strong>Every 15 sec</strong></div>
+      <div class="metric"><small>News Categories</small><strong>Markets • Crypto • Politics</strong></div>
+      <div class="metric"><small>Premium Benefit</small><strong>Ad-free + Alerts</strong></div>
+    </aside>
+  </section>
+
+  <main>
+    <section id="home" class="page active">
+      <div class="home-layout">
+        <aside class="ad-rail">
+          <div class="ad-box">Ad Space<br />Broker affiliate / finance tools</div>
+          <div class="ad-box">Ad Space<br />Premium sponsor slot</div>
+        </aside>
+
+        <section>
+          <div class="ticker-bar">
+            <div class="ticker-item"><b>SPY</b> <span class="up">+0.42%</span></div>
+            <div class="ticker-item"><b>QQQ</b> <span class="up">+0.71%</span></div>
+            <div class="ticker-item"><b>BTC</b> <span class="down">-1.18%</span></div>
+            <div class="ticker-item"><b>NVDA</b> <span class="up">+2.05%</span></div>
+            <div class="ticker-item"><b>HOOD</b> <span class="up">+1.34%</span></div>
+            <div class="ticker-item"><b>ETH</b> <span class="down">-0.66%</span></div>
+          </div>
+
+          <div class="feed-toolbar">
+            <div class="filters">
+              <button class="chip active">All</button>
+              <button class="chip">Stocks</button>
+              <button class="chip">Crypto</button>
+              <button class="chip">Politics</button>
+              <button class="chip">Geopolitics</button>
+            </div>
+            <div class="refresh">⟳ Auto-refresh active</div>
+          </div>
+
+          <div class="news-grid" id="newsFeed">
+            <article class="news-card">
+              <div class="time-box">LIVE<br /><small>Now</small></div>
+              <div>
+                <h3>Fed commentary sends growth stocks higher in early trading</h3>
+                <p>Investors react to rate expectations, Treasury yields, and fresh economic commentary that could impact technology and financial stocks.</p>
+              </div>
+              <span class="tag">Stocks</span>
+            </article>
+
+            <article class="news-card">
+              <div class="time-box">2m<br /><small>ago</small></div>
+              <div>
+                <h3>Bitcoin volatility rises as traders watch liquidity and ETF flows</h3>
+                <p>Crypto markets remain sensitive to macro headlines, risk appetite, and institutional fund movement.</p>
+              </div>
+              <span class="tag">Crypto</span>
+            </article>
+
+            <article class="news-card">
+              <div class="time-box">8m<br /><small>ago</small></div>
+              <div>
+                <h3>Major political headline could affect defense, energy, and chip stocks</h3>
+                <p>Market watchers are monitoring policy developments that may shift sector sentiment throughout the session.</p>
+              </div>
+              <span class="tag">Politics</span>
+            </article>
+
+            <article class="news-card">
+              <div class="time-box">14m<br /><small>ago</small></div>
+              <div>
+                <h3>Oil prices move as geopolitical risk returns to focus</h3>
+                <p>Energy traders are watching global supply routes, diplomatic statements, and potential disruptions.</p>
+              </div>
+              <span class="tag">Geopolitics</span>
+            </article>
+          </div>
+        </section>
+
+        <aside class="ad-rail">
+          <div class="ad-box">Ad Space<br />Trading platform affiliate</div>
+          <div class="ad-box">Ad Space<br />Newsletter sponsor</div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="about" class="page">
+      <div class="panel">
+        <h2>About MarketFlash</h2>
+        <p>MarketFlash was built for traders and investors who want fast access to market-moving information without clutter. The mission is simple: deliver quick, organized, and relevant news across stocks, crypto, politics, and global events so users can react with confidence.</p>
+        <div class="cards-3">
+          <div class="mini-card"><h3>Speed First</h3><p>Designed around rapid refreshes and breaking headline visibility.</p></div>
+          <div class="mini-card"><h3>Market Focused</h3><p>Filters out noise and highlights stories that may move financial markets.</p></div>
+          <div class="mini-card"><h3>Revenue Ready</h3><p>Supports ads, premium subscriptions, and affiliate placements.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="support" class="page">
+      <div class="panel">
+        <h2>Support</h2>
+        <p>Use the assistant below for simple account, billing, premium, or website problems. For partnerships, advertising, or ideas, contact the owner directly.</p>
+        <div class="chatbot">
+          <div>
+            <div class="chat-window">
+              <div class="bot-msg">Hi, I’m the MarketFlash support bot. How can I help?</div>
+              <div class="user-msg">How do I upgrade to premium?</div>
+              <div class="bot-msg">Go to Account, choose Premium, and select your preferred subscription plan.</div>
+            </div>
+            <div class="chat-input">
+              <input placeholder="Type your support question..." />
+              <button class="btn btn-primary">Send</button>
+            </div>
+          </div>
+          <div class="mini-card">
+            <h3>Contact Owner</h3>
+            <p>Email: owner@marketflash.com</p>
+            <p>Partnerships: ads, affiliate offers, data providers, and premium features.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="account" class="page">
+      <div class="panel">
+        <h2>Account</h2>
+        <p>Log in, manage account settings, and upgrade to premium for a cleaner and faster experience.</p>
+        <div class="account-grid">
+          <div class="mini-card">
+            <h3>Login</h3>
+            <input placeholder="Email address" style="margin: 12px 0;" />
+            <input type="password" placeholder="Password" style="margin-bottom: 12px;" />
+            <button class="btn btn-primary">Log In</button>
+            <button class="btn btn-secondary">Log Out</button>
+          </div>
+          <div class="mini-card">
+            <h3>Premium Subscription</h3>
+            <div class="price">$9.99<span style="font-size:1rem;color:var(--muted);">/mo</span></div>
+            <p>Remove ads, receive faster alerts, save custom feeds, and unlock premium market reports.</p>
+            <button class="btn btn-primary" style="margin-top: 16px;">Upgrade Now</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 MarketFlash. Built for fast financial news access. Not financial advice.
+  </footer>
+
+  <script>
+    function showPage(pageId, button) {
+      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    const sampleUpdates = [
+      ['LIVE', 'Breaking headline detected: chip stocks move after fresh AI infrastructure report', 'Technology names are reacting to new data-center spending commentary and market-wide risk sentiment.', 'Stocks'],
+      ['LIVE', 'Crypto market update: Bitcoin traders react to dollar and bond yield movement', 'Digital assets remain tied to macro trends as investors watch liquidity conditions.', 'Crypto'],
+      ['LIVE', 'Policy headline watch: investors monitor potential market impact', 'Political developments may affect defense, energy, healthcare, and technology sectors.', 'Politics']
+    ];
+
+    let updateIndex = 0;
+    setInterval(() => {
+      const feed = document.getElementById('newsFeed');
+      const update = sampleUpdates[updateIndex % sampleUpdates.length];
+      const card = document.createElement('article');
+      card.className = 'news-card';
+      card.innerHTML = `
+        <div class="time-box">${update[0]}<br /><small>Now</small></div>
+        <div>
+          <h3>${update[1]}</h3>
+          <p>${update[2]}</p>
+        </div>
+        <span class="tag">${update[3]}</span>
+      `;
+      feed.prepend(card);
+      if (feed.children.length > 7) feed.removeChild(feed.lastElementChild);
+      updateIndex++;
+    }, 15000);
+  </script>
+</body>
+</html>
